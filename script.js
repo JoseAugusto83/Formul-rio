@@ -15,11 +15,7 @@ function checkInputs(){
     var senhaValue = senha.value;
     var senhaConfirmationValue = senhaConfirmation.value;
 
-
-    /*if(nameValue === ""){
-        errorClass(nome, "O nome é obrigatório!")
-    }*/
-
+    
     if(nameValue === ""){
         validationError(nome, "O nome é obrigatório!")
         
@@ -29,19 +25,35 @@ function checkInputs(){
 
     if(emailValue ===""){
         validationError(email, "O Email é obrigatório")
-    }else{
+
+    }else if(checkEmail(emailValue) === false){
+        validationError(email, "Digite um Email válido")
+    }
+    
+    else{
         validationSuccess(email)
     }
 
     if(senhaValue === ""){
         validationError(senha, "A senha é obrigatória!")
-    }else{
+
+    }else if(senhaValue.length < 7){
+        validationError(senha, "A senha precisa ter ao menos 7 caracteres")
+    }
+    
+    else{
         validationSuccess(senha);
     }
 
     if(senhaConfirmationValue === ""){
         validationError(senhaConfirmation, "A senha de confirmação é obrigatória!")
-    }else{
+
+    }
+    
+    else if(senhaConfirmationValue !== senhaValue){
+        validationError(senhaConfirmation, "As senhas estão diferentes")
+    }
+    else{
         validationSuccess(senhaConfirmation);
     }
 
@@ -67,6 +79,12 @@ function validationSuccess(input){
     small.innerText = ""
 }
 
+function checkEmail(email) {
+    return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
+      email
+    );
+}
+
 
 function formValid(){
     const forms = document.querySelectorAll(".success");
@@ -83,11 +101,3 @@ function formValid(){
         })
     }
 }
-/*function errorClass(input, mensagem){
-    var formControl = input.parentElement;
-    input.className = "error";
-    var small = formControl.querySelector("small");
-    small.innerText = mensagem;
-    var icon = formControl.querySelector(".fa-exclamation-circle")
-    icon.setAttribute("id", "error");
-}*/
